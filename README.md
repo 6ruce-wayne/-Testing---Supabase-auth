@@ -1,4 +1,4 @@
-# RMZ Register (Next.js 15 + Supabase SSR)
+# [Testing] - Supabase auth (Next.js 15 + Supabase SSR)
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
@@ -139,7 +139,7 @@ rmz-register/
 1. Clone repository นี้ลงเครื่อง:
 
 ```bash
-git clone https://github.com/6ruce-wayne/rmz-register.git
+git clone https://github.com/6ruce-wayne/-Testing---Supabase-auth.git
 cd rmz-register
 ```
 
