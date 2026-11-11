@@ -1,109 +1,207 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# RMZ Register (Next.js 15 + Supabase SSR)
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-SSR-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+ระบบ Authentication และ User Registration เว็บแอปพลิเคชัน พัฒนาด้วย **Next.js 15 (App Router)** ร่วมกับ **Supabase SSR (`@supabase/ssr`)** โดยใช้สถาปัตยกรรม Cookie-based Session ปลอดภัยสำหรับการ Render ฝั่ง Server Component และ Middleware พร้อมระบบ Theme และ UI Components จาก shadcn/ui
 
-## Features
+---
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+## 📑 สารบัญ (Table of Contents)
 
-## Demo
+- [ฟีเจอร์หลัก (Key Features)](#-ฟีเจอร์หลัก-key-features)
+- [Tech Stack](#-tech-stack)
+- [โครงสร้างโปรเจกต์ (Project Structure)](#-โครงสร้างโปรเจกต์-project-structure)
+- [สถาปัตยกรรมการพิสูจน์ตัวตน (Authentication Architecture)](#-สถาปัตยกรรมการพิสูจน์ตัวตน-authentication-architecture)
+- [เริ่มต้นใช้งาน (Getting Started)](#-เริ่มต้นใช้งาน-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Development & Build](#development--build)
+- [Scripts คำสั่งในโปรเจกต์](#-scripts-คำสั่งในโปรเจกต์)
+- [ผู้พัฒนา (Author)](#-ผู้พัฒนา-author)
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+---
 
-## Deploy to Vercel
+## ✨ ฟีเจอร์หลัก (Key Features)
 
-Vercel deployment will guide you through creating a Supabase account and project.
+- ✅ **Cookie-Based Authentication:** จัดการ Session ผ่าน HttpOnly Cookies ด้วย `@supabase/ssr` รองรับ Server Components, Server Actions และ Edge Middleware
+- ✅ **Complete Auth Lifecycle:**
+  - ลงทะเบียนผู้ใช้ใหม่ (Sign Up พร้อมระบบยืนยันตัวตนผ่าน Email)
+  - เข้าสู่ระบบ (Login ด้วย Email และ Password)
+  - รีเซ็ตรหัสผ่าน (Forgot Password & Password Reset Email)
+  - เปลี่ยนรหัสผ่านใหม่ (Update Password)
+  - ออกจากระบบ (Logout และ Revoke Session ทันที)
+- ✅ **Route Protection:** ระบบ Route Guard ป้องกันหน้าลับ (`/protected`) ระดับ Middleware และ Server Component Fallback ปราศจากปัญหา FOUC (Flash of Unauthenticated Content)
+- ✅ **Modern Responsive UI:** สร้างด้วย [Tailwind CSS](https://tailwindcss.com) และ [shadcn/ui](https://ui.shadcn.com) ปรับแต่งได้ง่าย
+- ✅ **Theme Switcher:** รองรับทั้ง Dark Mode และ Light Mode อย่างสมบูรณ์ผ่าน `next-themes`
+- ✅ **Type Safety:** พัฒนาด้วย TypeScript ทั้งหมด พร้อม ESLint 9
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+---
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+## 🛠 Tech Stack
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | [Next.js 15](https://nextjs.org/) (App Router) |
+| **Library** | [React 19](https://react.dev/) |
+| **Language** | [TypeScript 5](https://www.typescriptlang.org/) |
+| **Authentication & Database** | [Supabase](https://supabase.com/) (`@supabase/ssr`, `@supabase/supabase-js`) |
+| **Styling** | [Tailwind CSS 3.4](https://tailwindcss.com/), [tailwindcss-animate](https://github.com/jamiebuilds/tailwindcss-animate) |
+| **UI Components** | [shadcn/ui](https://ui.shadcn.com/) (Radix UI primitives) |
+| **Icons** | [Lucide React](https://lucide.dev/) |
+| **Theming** | [next-themes](https://github.com/pacocoursey/next-themes) |
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+---
 
-## Clone and run locally
+## 📁 โครงสร้างโปรเจกต์ (Project Structure)
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+```text
+rmz-register/
+├── app/
+│   ├── auth/
+│   │   ├── confirm/
+│   │   │   └── route.ts             # Route Handler สำหรับยืนยัน Email OTP / Token
+│   │   ├── error/
+│   │   │   └── page.tsx             # หน้าแสดงผลเมื่อเกิดข้อผิดพลาดในการยืนยันตัวตน
+│   │   ├── forgot-password/
+│   │   │   └── page.tsx             # หน้าขอรีเซ็ตรหัสผ่าน
+│   │   ├── login/
+│   │   │   └── page.tsx             # หน้าเข้าสู่ระบบ
+│   │   ├── sign-up/
+│   │   │   └── page.tsx             # หน้าสมัครสมาชิก
+│   │   ├── sign-up-success/
+│   │   │   └── page.tsx             # หน้าแจ้งเตือนการส่ง Email ยืนยันตัวตน
+│   │   └── update-password/
+│   │       └── page.tsx             # หน้าตั้งรหัสผ่านใหม่
+│   ├── protected/
+│   │   ├── layout.tsx
+│   │   └── page.tsx                 # หน้าสำหรับ Authenticated Users เท่านั้น
+│   ├── globals.css                  # Global Tailwind CSS & Design System Variables
+│   ├── layout.tsx                   # Root Layout พร้อม ThemeProvider
+│   └── page.tsx                     # Landing Page
+├── components/
+│   ├── ui/                          # UI Primitives (Button, Card, Input, Label, etc.)
+│   ├── tutorial/                    # Component แนะนำขั้นตอนการเชื่อมต่อ Supabase
+│   ├── auth-button.tsx              # Component แสดงสถานะ Auth / ปุ่ม Sign In / Profile
+│   ├── deploy-button.tsx
+│   ├── forgot-password-form.tsx
+│   ├── hero.tsx
+│   ├── login-form.tsx               # Client Component สำหรับ Form Login
+│   ├── logout-button.tsx            # Client Component สำหรับ Sign Out
+│   ├── sign-up-form.tsx             # Client Component สำหรับ Form Sign Up
+│   ├── theme-switcher.tsx           # สลับ Light / Dark Mode
+│   └── update-password-form.tsx
+├── lib/
+│   ├── supabase/
+│   │   ├── client.ts                # Browser Client (createBrowserClient)
+│   │   ├── server.ts                # Server Client สำหรับ Server Components (createServerClient)
+│   │   └── proxy.ts                 # Session Updater & Cookie Synchronization
+│   └── utils.ts                     # Helper utilities (cn, hasEnvVars)
+├── proxy.ts                         # Edge Proxy / Middleware Request Interceptor
+├── components.json                  # shadcn/ui configuration
+├── next.config.ts                   # Next.js Configuration
+├── package.json
+├── tailwind.config.ts
+└── tsconfig.json
+```
 
-2. Create a Next.js app using the Supabase Starter template npx command
+---
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+## 🔒 สถาปัตยกรรมการพิสูจน์ตัวตน (Authentication Architecture)
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+สถาปัตยกรรมของโปรเจกต์นี้ทำงานร่วมกัน 3 เลเยอร์:
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+1. **Client Layer (`components/login-form.tsx`):**
+   - เรียกใช้ `createBrowserClient` เพื่อพิสูจน์ตัวตนผ่าน Supabase GoTrue API
+   - Token จะถูกเขียนลงใน Browser Cookies โดยตรง
+2. **Edge Interceptor Layer (`proxy.ts` / `lib/supabase/proxy.ts`):**
+   - ดักจับ Request เพื่อตรวจสอบสถานะ Session ผ่าน `getClaims()`
+   - ซิงค์และ Refresh Token ใน Response Cookie อัตโนมัติ ป้องกัน Session หลุด
+3. **Server Component Guard (`app/protected/page.tsx`):**
+   - ดึงข้อมูล User Claims ผ่าน `createServerClient` อ่านจาก Cookies
+   - Redirect ผู้ใช้ที่ไม่มีสิทธิ์ไปยัง `/auth/login` ทันทีก่อนที่จะเริ่ม Render หน้าเว็บ
 
-3. Use `cd` to change into the app's directory
+---
 
-   ```bash
-   cd with-supabase-app
-   ```
+## 🚀 เริ่มต้นใช้งาน (Getting Started)
 
-4. Rename `.env.example` to `.env.local` and update the following:
+### Prerequisites
 
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
+- [Node.js](https://nodejs.org/) (Version 18.17 หรือใหม่กว่า)
+- [Supabase](https://supabase.com/) Account & Project
 
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+### Installation
 
-5. You can now run the Next.js local development server:
+1. Clone repository นี้ลงเครื่อง:
 
-   ```bash
-   npm run dev
-   ```
+```bash
+git clone https://github.com/6ruce-wayne/rmz-register.git
+cd rmz-register
+```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+2. ติดตั้ง Dependencies:
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+```bash
+npm install
+```
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+### Environment Variables
 
-## Feedback and issues
+คัดลอกไฟล์ `.env.example` เป็น `.env.local`:
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+```bash
+cp .env.example .env.local
+```
 
-## More Supabase examples
+กำหนดค่า Supabase Project Credentials ใน `.env.local`:
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key-or-anon-key
+```
+
+> [!NOTE]
+> สามารถดู URL และ Publishable/Anon Key ได้จาก **Supabase Dashboard** > **Project Settings** > **API**
+
+### Development & Build
+
+รัน Local Development Server:
+
+```bash
+npm run dev
+```
+
+เปิดเบราว์เซอร์ไปที่ [http://localhost:3000](http://localhost:3000)
+
+สร้าง Production Build:
+
+```bash
+npm run build
+npm run start
+```
+
+---
+
+## 📜 Scripts คำสั่งในโปรเจกต์
+
+| Script | คำอธิบาย |
+| :--- | :--- |
+| `npm run dev` | เริ่มต้น Development Server แบบ Hot-Reload |
+| `npm run build` | Compile และ Build โปรเจกต์สำหรับ Production |
+| `npm run start` | รันเซิร์ฟเวอร์ Production Build |
+| `npm run lint` | ตรวจสอบ Code Quality ด้วย ESLint |
+
+---
+
+## 👨‍💻 ผู้พัฒนา (Author)
+
+**ปริญญา กันชัย (Parinya Kanchai)**  
+*IT Support · SAP Administrator · Developer · System Administrator*
+
+- 🌐 Website: [rmzstudio.xyz](https://rmzstudio.xyz)
+- 🐙 GitHub: [@6ruce-wayne](https://github.com/6ruce-wayne)
+- 📧 Email: rmninthailand@gmail.com
